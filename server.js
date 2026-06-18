@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const { MercadoPagoConfig, Preference } = require("mercadopago");
 
@@ -8,8 +9,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Servir archivos HTML
+app.use(express.static(path.join(__dirname, "public")));
+
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN
+});
+
+// Ruta principal
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.post("/crear-pago", async (req, res) => {
@@ -36,6 +45,7 @@ app.post("/crear-pago", async (req, res) => {
 
   } catch (error) {
     console.error(error);
+
     res.status(500).json({
       success: false,
       error: error.message
@@ -43,6 +53,8 @@ app.post("/crear-pago", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Servidor iniciado");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor iniciado en puerto ${PORT}`);
 });

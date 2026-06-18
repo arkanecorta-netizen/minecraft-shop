@@ -2,35 +2,31 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Tienda Minecraft</title>
-
-<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+<h1>Tienda Minecraft</h1>
 
-    <h1>Minecraft Shop</h1>
+<button onclick="comprar()">
+Comprar VIP - $1000
+</button>
 
-    <div class="producto">
+<script>
+async function comprar() {
+  const res = await fetch("/crear-pago", {
+    method: "POST"
+  });
 
-        <h2>VIP</h2>
+  const data = await res.json();
 
-        <p>Acceso VIP en el servidor</p>
-
-        <h3>$1000 ARS</h3>
-
-        <button onclick="comprar()">
-            Comprar
-        </button>
-
-    </div>
-
-</div>
-
-<script src="script.js"></script>
+  if (data.success) {
+    window.location.href = data.url;
+  } else {
+    alert("Error al crear el pago");
+  }
+}
+</script>
 
 </body>
 </html>
