@@ -23,7 +23,7 @@ app.post("/crear-pago", async (req, res) => {
           {
             title: "VIP Minecraft",
             quantity: 1,
-            unit_price: 1000
+            unit_price: 10
           }
         ]
       }
